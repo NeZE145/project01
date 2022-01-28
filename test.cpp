@@ -3,7 +3,7 @@
 using namespace std;
 
 const int N = 9; // เปลี่ยนได้ตามขนาด นั้นนี้ตั้งค่าเริ่มต้นไว้เฉยๆ
-const int M = 9;
+const int M = 9; //เปลี่ยน
 
 void pullpiecse(bool [][M], int,int);
 
