@@ -1,9 +1,8 @@
-
 #include<iostream>
 
 using namespace std;
 
-const int N = 9;
+const int N = 9; // เปลี่ยนได้ตามขนาด นั้นนี้ตั้งค่าเริ่มต้นไว้เฉยๆ
 const int M = 9;
 
 void pullpiecse(bool [][M], int,int);
@@ -28,13 +27,19 @@ void board(){
 
 
 int main(){
-    board();
+    //board();
     bool image[N][M] = {};
     int x, y;
-    cout << "Input your location: ";
-    cin >> x >> y;
-    pullpiecse(image,x,y);
-    pull(image);
+    do
+    {
+        if (x==0 && y ==0) break; //ใส่เงื่อนไขนับแต้ม
+        else{
+            cout << "Player1 Input your location: ";
+            cin >> x >> y;
+            pullpiecse(image,x,y);
+            pull(image);
+        }
+    } while (1);
     return 0;
 }
 
@@ -43,7 +48,7 @@ void pullpiecse(bool image[][M], int x, int y){
     {
         for (int j = 0; j < M; j++)
         {
-            if (x == i && y == j) image[i][j]=1;
+            if (x-1 == i && y-1 == j) image[i][j]=1;
         }
         
     }
