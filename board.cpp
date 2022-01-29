@@ -10,6 +10,7 @@ void pull(const bool [][M]);
 
 void board(const bool[][M],const bool[][M],int );
 
+
     
 
 
@@ -18,20 +19,28 @@ int main(){
     bool player2[N][M] = {};
     int x, y,w,z,g;
     int turn =1;
-    //ใส่หมากยังไม่ตรง
 
         do{
             board(player1,player2,turn);
             cout << "Player1 Input your location: ";
-            cin >> x >> y;
-            player1[x][y] = 1;
-            board(player1,player2,turn);
-           cout << "Player2 Input your location: ";
-           cin >> w >> z;
-           player2[w][z] = 1;
+            do{
+                cin >> x >> y;
+                if(player1[x-1][y-1]==1 || player2[x-1][y-1] == 1)
+                    cout << "Alredy Exit"<<endl << "Player1 Input your location: ";
+            }while(player1[x-1][y-1]==1|| player2[x-1][y-1] == 1);
+            player1[x-1][y-1] = 1;
            board(player1,player2,turn);
-           cout << "0 to stop ";
+            cout << "Player2 Input your location: ";
+            do{
+                cin >> w >> z;
+                if(player1[w-1][z-1]==1 || player2[w-1][z-1] == 1)
+                    cout << "Alredy Exit"<<endl << "Player2 Input your location: ";
+            }while(player1[w-1][z-1]==1|| player2[w-1][z-1] == 1);
+            player2[w-1][z-1] = 1;
+           board(player1,player2,turn);
+           cout << endl<< "0 to stop ";
            cin >> g;
+           cout << endl;
         }while(g!=0);
            
 
@@ -41,10 +50,9 @@ int main(){
 
 
 void board(const bool A[][M],const bool B[][M],int turn){
-    char a='a';
-    for(int i=0;i<9;i++){
-        cout << 9-i << "  ";
-        for (int j=0;j<9;j++){
+    for(int i=0;i<M;i++){
+        cout << M-i << "  ";
+        for (int j=0;j<M;j++){
             if(A[j][i])
                 cout << " *";
             if(B[j][i])
@@ -56,13 +64,13 @@ void board(const bool A[][M],const bool B[][M],int turn){
 
     }
     cout << "    ";
-    for(int i=0;i<9;i++){
-        cout << a++<<" ";
+    for(int i=0;i<M;i++){
+        cout << i+1 <<" ";
     }
     cout << "\n";
 
-}
 
+}
 
 
 
