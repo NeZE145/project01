@@ -3,7 +3,7 @@
 using namespace std;
 
 const int N = 9; // เปลี่ยนได้ตามขนาด นั้นนี้ตั้งค่าเริ่มต้นไว้เฉยๆ
-const int M = 9; //เปลี่ยน
+const int M = 9;
 
 void pullpiecse(bool [][M], int,int);
 
@@ -27,7 +27,7 @@ void board(){
 
 
 int main(){
-    //board();
+    board();
     bool image[N][M] = {};
     int x, y;
     do
@@ -67,3 +67,7 @@ void pull(const bool image[][M]){
     }
     
 }
+
+
+
+
