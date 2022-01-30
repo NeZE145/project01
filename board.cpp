@@ -24,7 +24,7 @@ int main(){
             do{
                 cin >> x >> y;
                 if(player1[x-1][y-1]==1 || player2[x-1][y-1] == 1)
-                    cout << "Alredy Exit"<<endl << "Player1 Input your location: ";
+                    cout << "Alredy Exist"<<endl << "Player1 Input your location: ";
             }while(player1[x-1][y-1]==1|| player2[x-1][y-1] == 1);
             player1[x-1][y-1] = 1;
            board(player1,player2);
@@ -32,7 +32,7 @@ int main(){
             do{
                 cin >> w >> z;
                 if(player1[w-1][z-1]==1 || player2[w-1][z-1] == 1)
-                    cout << "Alredy Exit"<<endl << "Player2 Input your location: ";
+                    cout << "Alredy Exist"<<endl << "Player2 Input your location: ";
             }while(player1[w-1][z-1]==1|| player2[w-1][z-1] == 1);
             player2[w-1][z-1] = 1;
            board(player1,player2);
