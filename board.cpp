@@ -50,7 +50,7 @@ int main(){
 
 void board(const bool A[][M],const bool B[][M]){
     for(int i=0;i<M;i++){
-        cout << M-i << "  ";
+        cout << i+1 << "  ";
         for (int j=0;j<M;j++){
             if(A[j][i])
                 cout << " *";
