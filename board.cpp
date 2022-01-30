@@ -13,7 +13,6 @@ void board(const bool[][M],const bool[][M]);
 
     
 
-
 int main(){
     bool player1[N][M] = {};
     bool player2[N][M] = {};
