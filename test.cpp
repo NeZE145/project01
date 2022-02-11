@@ -1,65 +1,8 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-// #include "board.cpp"
+#include "board.h"
 using namespace std;
-
-// test board
-int board_9x9[] = {
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 1, 1, 0, 0, 7,
-    7, 0, 0, 0, 0, 1, 1, 1, 0, 0, 7,
-    7, 0, 0, 0, 1, 1, 1, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
-};
-
-int board_13x13[] = {
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
-};
-
-int board_19x19[] = {
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
-};
 
 //stones
 int EMPTY = 0;
@@ -106,7 +49,7 @@ void print_board(int board[], int board_size, char pieces[], char files[]){
     cout <<endl;
 }
 
-void set_board(int board[], int board_size, int total_size){
+void set_board(int board[], string coord[], int board_size, int total_size){
     //duplicate board
     if (board_size == 9){
         for (int i=0; i<total_size; i++){
@@ -119,6 +62,21 @@ void set_board(int board[], int board_size, int total_size){
     } else if (board_size == 19){
         for (int i=0; i<total_size; i++){
         board[i] = board_19x19[i];
+        }
+    }
+
+    //duplicate coord
+    if (board_size == 9){
+        for (int i=0; i<total_size; i++){
+        coord[i] = coords_9x9[i];
+        }
+    } else if (board_size == 13){
+        for (int i=0; i<total_size; i++){
+        coord[i] = coords_13x13[i];
+        }
+    } else if (board_size == 19){
+        for (int i=0; i<total_size; i++){
+        coord[i] = coords_19x19[i];
         }
     }
 }
@@ -161,35 +119,45 @@ void restore_board(int board[]){
     }
 }
 
+// just test place stone function
+void place_stone(int board[], string coord[], int board_size){
+    string position;
+    
+    // select position
+    cout << "select position (Example A4, B5, ...): ";
+    cin >> position;
+
+    // find position
+    int i=0;
+    while (coord[i] != "\0"){
+        if (coord[i] == position) break;
+        i++;
+    }
+
+    board[i] = BLACK;
+
+    print_board(board, board_size, pieces, files);
+}
+
 int main() {
     //loop ask board size
     do {
-    cout << "Select board size (9, 13, 19) : "; // test on board 9
+    cout << "Select board size (9, 13, 19) : ";
     cin >> board_size;
     }while (board_size != 9 && board_size != 13 && board_size != 19);
 
     //set board size
     int total_size = (int) pow(board_size+2, 2);
     int board[total_size];
-    set_board(board, board_size, total_size);
+    string coord[total_size];
+    set_board(board, coord, board_size, total_size);
 
     print_board(board, board_size, pieces, files);
 
-    count(board, 32, BLACK); // board 9: 82, board 13: 32
-
-    //clear stone
-    clear_stone(board);
-
-    print_board(board, board_size, pieces, files);
-
-    // show position
-    cout <<"\n";
-    cout <<"block : ";
-    for (int i=0; i<block.size(); i++) cout<<block[i] <<" ";
-    cout << "\n";
-    cout <<"liberties : ";
-    for (int i=0; i<liberties.size(); i++) cout<<liberties[i] <<" ";
-    cout << "\n\n";
+    // just test 5 times
+    for (int k=0; k<5; k++){
+        place_stone(board, coord, board_size);
+    };
 
     return 0;
 }

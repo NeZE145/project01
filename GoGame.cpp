@@ -49,7 +49,7 @@ void print_board(int board[], int board_size, char pieces[], char files[]){
     cout <<endl;
 }
 
-void set_board(int board[], int board_size, int total_size){
+void set_board(int board[], string coord[], int board_size, int total_size){
     //duplicate board
     if (board_size == 9){
         for (int i=0; i<total_size; i++){
@@ -62,6 +62,21 @@ void set_board(int board[], int board_size, int total_size){
     } else if (board_size == 19){
         for (int i=0; i<total_size; i++){
         board[i] = board_19x19[i];
+        }
+    }
+
+    //duplicate coord
+    if (board_size == 9){
+        for (int i=0; i<total_size; i++){
+        coord[i] = coords_9x9[i];
+        }
+    } else if (board_size == 13){
+        for (int i=0; i<total_size; i++){
+        coord[i] = coords_13x13[i];
+        }
+    } else if (board_size == 19){
+        for (int i=0; i<total_size; i++){
+        coord[i] = coords_19x19[i];
         }
     }
 }
@@ -114,7 +129,8 @@ int main() {
     //set board size
     int total_size = (int) pow(board_size+2, 2);
     int board[total_size];
-    set_board(board, board_size, total_size);
+    string coord[total_size];
+    set_board(board, coord, board_size, total_size);
 
     print_board(board, board_size, pieces, files);
 
