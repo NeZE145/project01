@@ -123,18 +123,26 @@ void restore_board(int board[]){
 void place_stone(int board[], string coord[], int board_size){
     string position;
     
-    // select position
-    cout << "select position (Example A4, B5, ...): ";
-    cin >> position;
+    // loop ask position
+    while (true) {
+        // select position
+        cout << "select position (Example A4, B5, ...): ";
+        cin >> position;
+    
+        // convert to uppercase
+        if (position[0]>='a' && position[0] <= 'z') position[0] = position[0] - 32;
 
-    // find position
-    int i=0;
-    while (coord[i] != "\0"){
-        if (coord[i] == position) break;
-        i++;
+        // find position
+        int i=0;
+        while (coord[i] != "\0"){
+            if (coord[i] == position) break;
+            i++;
+        }
+        if (board[i] == EMPTY) {
+            board[i] = BLACK;
+            break;
+        } else cout <<"Alredy Exist !" <<endl; 
     }
-
-    board[i] = BLACK;
 
     print_board(board, board_size, pieces, files);
 }
