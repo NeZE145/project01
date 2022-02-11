@@ -119,14 +119,13 @@ void restore_board(int board[]){
     }
 }
 
-// just test place stone function
-void place_stone(int board[], string coord[], int board_size){
+void place_stone(int board[], string coord[], int board_size, int color){
     string position;
     
     // loop ask position
     while (true) {
         // select position
-        cout << "select position (Example A4, B5, ...): ";
+        cout <<"select position (Example A4, B5, ...): ";
         cin >> position;
     
         // convert to uppercase
@@ -139,12 +138,30 @@ void place_stone(int board[], string coord[], int board_size){
             i++;
         }
         if (board[i] == EMPTY) {
-            board[i] = BLACK;
+            board[i] = color;
             break;
         } else cout <<"Alredy Exist !" <<endl; 
     }
 
     print_board(board, board_size, pieces, files);
+}
+
+void switch_player(int board[], string coord[], int board_size){
+    int turn = 1;
+    while (true) {
+        // player one's turn
+        cout <<"\n\n";
+        cout <<"[Turn " <<turn << "] Player 1 !!!" <<"\n\n";
+        place_stone(board, coord, board_size, BLACK);
+
+        // player two's turn
+        cout <<"\n\n";
+        cout <<"[Turn " <<turn << "] Player 2 !!!" <<"\n\n";
+        place_stone(board, coord, board_size, WHITE);
+
+        // next turn
+        turn++;
+    }
 }
 
 int main() {
@@ -162,10 +179,8 @@ int main() {
 
     print_board(board, board_size, pieces, files);
 
-    // just test 5 times
-    for (int k=0; k<5; k++){
-        place_stone(board, coord, board_size);
-    };
+    // take turns
+    switch_player(board, coord, board_size);
 
     return 0;
 }
