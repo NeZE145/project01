@@ -16,8 +16,6 @@ int LIBERTY = 8;
 int board_size, board_range;
 char pieces[] = {'.','#','o',' ',' ','b','w',' ','+'};
 char files[] = "     a b c d e f g h i j k l m n o p q r s t";
-
-//count
 vector<int> liberties = {}, block = {};
 
 //define function
@@ -119,51 +117,6 @@ void restore_board(int board[]){
     }
 }
 
-void place_stone(int board[], string coord[], int board_size, int color){
-    string position;
-    
-    // loop ask position
-    while (true) {
-        // select position
-        cout <<"select position (Example A4, B5, ...): ";
-        cin >> position;
-    
-        // convert to uppercase
-        if (position[0]>='a' && position[0] <= 'z') position[0] = position[0] - 32;
-
-        // find position
-        int i=0;
-        while (coord[i] != "\0"){
-            if (coord[i] == position) break;
-            i++;
-        }
-        if (board[i] == EMPTY) {
-            board[i] = color;
-            break;
-        } else cout <<"Alredy Exist !" <<endl; 
-    }
-
-    print_board(board, board_size, pieces, files);
-}
-
-void switch_player(int board[], string coord[], int board_size){
-    int turn = 1;
-    while (true) {
-        // player one's turn
-        cout <<"\n\n";
-        cout <<"[Turn " <<turn << "] Player 1 !!!" <<"\n\n";
-        place_stone(board, coord, board_size, BLACK);
-
-        // player two's turn
-        cout <<"\n\n";
-        cout <<"[Turn " <<turn << "] Player 2 !!!" <<"\n\n";
-        place_stone(board, coord, board_size, WHITE);
-
-        // next turn
-        turn++;
-    }
-}
-
 int main() {
     //loop ask board size
     do {
@@ -179,8 +132,29 @@ int main() {
 
     print_board(board, board_size, pieces, files);
 
-    // take turns
-    switch_player(board, coord, board_size);
+    count(board, 32, BLACK);
+
+    clear_stone(board);
+
+    print_board(board, board_size, pieces, files);
+
+    // show position
+    cout <<"\n";
+    cout <<"block : ";
+    for (int i=0; i<block.size(); i++) cout<<block[i] <<" ";
+    cout << "\n";
+    cout <<"liberties : ";
+    for (int i=0; i<liberties.size(); i++) cout<<liberties[i] <<" ";
+    cout << "\n\n";
+
+    // // restore board
+    // restore_board(board);
+
+    // print_board(board, board_size, pieces, files);
+
+    // for (int i=0; i<block.size(); i++) cout<<block[i] <<" ";
+    // cout << "\n";
+    // for (int i=0; i<liberties.size(); i++) cout<<liberties[i] <<" ";
 
     return 0;
 }
