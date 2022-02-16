@@ -13,15 +13,15 @@ int OFFBOARD = 7;
 int LIBERTY = 8;
 
 //Variable
+int board[500];
+string coord[500];
 int board_size, board_range;
 char pieces[] = {'.','#','o',' ',' ','b','w',' ','+'};
 char files[] = "     a b c d e f g h i j k l m n o p q r s t";
-
-//count
 vector<int> liberties = {}, block = {};
 
 //define function
-void print_board(int board[], int board_size, char pieces[], char files[]){
+void print_board(){
     board_range = board_size + 2;
     int square, stone, rank;
 
@@ -49,7 +49,8 @@ void print_board(int board[], int board_size, char pieces[], char files[]){
     cout <<endl;
 }
 
-void set_board(int board[], string coord[], int board_size, int total_size){
+void set_board(){
+    int total_size = (int) pow(board_size+2, 2);
     //duplicate board
     if (board_size == 9){
         for (int i=0; i<total_size; i++){
@@ -81,7 +82,7 @@ void set_board(int board[], string coord[], int board_size, int total_size){
     }
 }
 
-void count(int board[], int square, int color){ 
+void count(int square, int color){ 
     // init piece
     int piece = board[square];
     
@@ -95,10 +96,10 @@ void count(int board[], int square, int color){
 
         board[square] |= MARKER;
 
-        count(board, square - board_range , color);
-        count(board, square - 1 , color);
-        count(board, square + board_range, color);
-        count(board, square + 1, color);
+        count(square - board_range , color);
+        count(square - 1 , color);
+        count(square + board_range, color);
+        count(square + 1, color);
         
     } 
     else if (piece == EMPTY) {
@@ -107,11 +108,11 @@ void count(int board[], int square, int color){
     }
 }
 
-void clear_stone(int board[]){
+void clear_stone(){
     for (int i=0; i<block.size(); i++) board[block[i]] = EMPTY;
 }
 
-void restore_board(int board[]){
+void restore_board(){
     liberties = {}, block = {};
 
     for (int i=0; i < board_range*board_range; i++){
@@ -119,7 +120,7 @@ void restore_board(int board[]){
     }
 }
 
-void place_stone(int board[], string coord[], int board_size, int color){
+void place_stone(int color){
     string position;
     
     // loop ask position
@@ -143,21 +144,22 @@ void place_stone(int board[], string coord[], int board_size, int color){
         } else cout <<"Alredy Exist !" <<endl; 
     }
 
-    print_board(board, board_size, pieces, files);
+    //print board
+    print_board();
 }
 
-void switch_player(int board[], string coord[], int board_size){
+void switch_player(){
     int turn = 1;
     while (true) {
         // player one's turn
         cout <<"\n\n";
         cout <<"[Turn " <<turn << "] Player 1 !!!" <<"\n\n";
-        place_stone(board, coord, board_size, BLACK);
+        place_stone(BLACK);
 
         // player two's turn
         cout <<"\n\n";
         cout <<"[Turn " <<turn << "] Player 2 !!!" <<"\n\n";
-        place_stone(board, coord, board_size, WHITE);
+        place_stone(WHITE);
 
         // next turn
         turn++;
@@ -171,16 +173,12 @@ int main() {
     cin >> board_size;
     }while (board_size != 9 && board_size != 13 && board_size != 19);
 
-    //set board size
-    int total_size = (int) pow(board_size+2, 2);
-    int board[total_size];
-    string coord[total_size];
-    set_board(board, coord, board_size, total_size);
-
-    print_board(board, board_size, pieces, files);
+    //set board size & print
+    set_board();
+    print_board();
 
     // take turns
-    switch_player(board, coord, board_size);
+    switch_player();
 
     return 0;
 }

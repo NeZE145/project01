@@ -74,20 +74,6 @@ void printboard(int a,int board[][1000]){
     cout << endl;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int main(){
     int g;
     chooseboardsize();
