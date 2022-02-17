@@ -7,7 +7,7 @@
 
 using namespace std;
   
-
+//1
 
 void chooseboardsize();
 void printboard(int,int);
