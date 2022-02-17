@@ -128,12 +128,28 @@ void count(int square, int color){
     }
 }
 
-void place_stone(int color){
-    string position;
-    int i;
+// loop แล้วตรวจว่าล้อมไหมถ้าล้อมให้ลบ (ยังไม่เสร็จ)
+void check_stone(int color){
     int oppcolor;
     if (color == BLACK) oppcolor = WHITE;
     else if (color == WHITE) oppcolor = BLACK;
+
+    // check.push_back(i);
+    for (int j=0; j<check.size(); j++){
+       count(check[j], color);
+       for (int k=0; k<liberties.size(); k++){
+           if (oppcolor != board[liberties[k]]) return;
+       }
+       clear_block;
+    }
+}
+
+void place_stone(int color){
+    string position;
+    int i;
+    // int oppcolor;
+    // if (color == BLACK) oppcolor = WHITE;
+    // else if (color == WHITE) oppcolor = BLACK;
     
     // loop ask position
     while (true) {
@@ -160,11 +176,20 @@ void place_stone(int color){
     // clear_block();
     // restore_board();
 
+
     check.push_back(i);
-    for (int j=0; j<check.size(); j++){
-       count(check[j], color);
-    //    if (oppcolor != LIBERTY) break;
-    }
+
+    check_stone(color);
+    
+    // for (int j=0; j<check.size(); j++){
+    //    count(check[j], color);
+    //    for (int k=0; k<liberties.size(); k++){
+    //        if (oppcolor != board[liberties[k]]) return;
+
+    //    }
+    // }
+
+
     // clear_block();
 
     //print board
