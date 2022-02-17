@@ -18,7 +18,8 @@ string coord[500];
 int board_size, board_range;
 char pieces[] = {'.','#','o',' ',' ','b','w',' ','+'};
 char files[] = "     a b c d e f g h i j k l m n o p q r s t";
-vector<int> liberties = {}, block = {};
+vector<int> p1_liberties = {}, p1_block = {};
+vector<int> p2_liberties = {}, p2_block = {};
 
 //define function
 void print_board(){
