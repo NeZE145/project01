@@ -1,7 +1,7 @@
 #include<iostream>
 #include<string>
 using namespace std;
-
+//1
 
 void changetoXY(string a,int &x,int &y){
     if (a[0]>='a' && a[0] <= 'z') a[0] = a[0] - 32;
