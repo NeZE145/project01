@@ -16,7 +16,8 @@ int LIBERTY = 8;
 int board[500];
 string coord[500];
 int board_size, board_range;
-char pieces[] = {'.','#','o',' ',' ','b','w',' ','+'};
+// char pieces[] = {'.','#','o',' ',' ','b','w',' ','+'};
+char pieces[] = {'.','#','o',' ',' ','#','o',' ','.'};
 char files[] = "     a b c d e f g h i j k l m n o p q r s t";
 vector<int> liberties = {}, block = {}, check = {};
 
@@ -124,7 +125,7 @@ void count(int square, int color){
         // save stone's coordinate
         block.push_back(square);
 
-        // board[square] |= MARKER;
+        board[square] |= MARKER;
 
         count(square - board_range , color);
         count(square - 1 , color);
@@ -133,7 +134,7 @@ void count(int square, int color){
         
     } 
     else if (piece == EMPTY) {
-        // board[square] |= LIBERTY;
+        board[square] |= LIBERTY;
         liberties.push_back(square);
     }
 }
