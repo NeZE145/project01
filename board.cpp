@@ -56,6 +56,58 @@ void printboard(int a,int board[][1000]){
 }
 
 
+
+
+
+void floodFillUtil(int board[][1000], int x, int y, int prevV, int newV)
+{
+    // Base cases
+    if (x < 0 || x >= a+2 || y < 0 || y >= a+2)
+        return;
+    if (board[x][y] != prevV)
+        return;
+ 
+    // Replace the color at (x, y)
+    board[x][y] = newV;
+ 
+    // Recur for north, east, south and west
+    floodFillUtil(board, x+1, y, prevV, newV);
+    floodFillUtil(board, x-1, y, prevV, newV);
+    floodFillUtil(board, x, y+1, prevV, newV);
+    floodFillUtil(board, x, y-1, prevV, newV);
+}
+ 
+// Returns size of maximum size subsquare matrix
+// surrounded by 'X'
+void replaceSurrounded(int board[][1000])
+{
+   // Step 1: Replace all 1  with 6
+   for (int i=0; i<a+2; i++)
+      for (int j=0; j<a+2; j++)
+          if (board[i][j] == 1)
+             board[i][j] = 6;
+ 
+   // Call floodFill for all 6 lying on edges
+   for (int i=0; i<a+2; i++)   // Left side
+      if (board[i][0] == 6)
+        floodFillUtil(board, i, 0, 6, 1);
+   for (int i=0; i<a+2; i++)  //  Right side
+      if (board[i][a+2-1] == 6)
+        floodFillUtil(board, i, a+2-1, 6, 1);
+   for (int i=0; i<a+2; i++)   // Top side
+      if (board[0][i] == 6)
+        floodFillUtil(board, 0, i, 6, 1);
+   for (int i=0; i<a+2; i++)  // Bottom side
+      if (board[a+2-1][i] == 6)
+        floodFillUtil(board, a+2-1, i, 6, 1);
+ 
+   // Step 3: Replace all 6 with 'X'
+   for (int i=0; i<a+2; i++)
+      for (int j=0; j<a+2; j++)
+         if (board[i][j] == 6)
+             board[i][j] = 0;
+ 
+}
 void setstone_printboard(){
     int x,y;
     cout << "player 1: : ";
@@ -75,9 +127,17 @@ void setstone_printboard(){
         cin >> x >> y;
     }
     board[x][y] = 2;
+    replaceSurrounded(board);
     printboard(a,board);
 
 }
+
+
+
+
+
+
+
 
 
 
