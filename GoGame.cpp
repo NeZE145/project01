@@ -148,6 +148,16 @@ void place_stone(int color){
     print_board();
 }
 
+void print_detail(){
+    cout <<"\n";
+    cout <<"block : ";
+    for (int i=0; i<block.size(); i++) cout<<block[i] <<" ";
+    cout << "\n";
+    cout <<"liberties : ";
+    for (int i=0; i<liberties.size(); i++) cout<<liberties[i] <<" ";
+    cout << "\n";
+}
+
 void switch_player(){
     int turn = 1;
     while (true) {
@@ -155,12 +165,13 @@ void switch_player(){
         cout <<"\n\n";
         cout <<"[Turn " <<turn << "] Player 1 !!!" <<"\n\n";
         place_stone(BLACK);
+        print_detail();
 
         // player two's turn
         cout <<"\n\n";
         cout <<"[Turn " <<turn << "] Player 2 !!!" <<"\n\n";
         place_stone(WHITE);
-
+        print_detail();
         // next turn
         turn++;
     }

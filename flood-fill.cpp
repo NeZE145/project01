@@ -87,7 +87,7 @@ void count(int board[], int square, int color){
     if (piece == OFFBOARD) return;
     
     // if there's a stone at square
-    if (piece == color){
+    if (piece && piece & color && (piece & MARKER) == 0){
         // save stone's coordinate
         block.push_back(square);
 

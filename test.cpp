@@ -18,8 +18,7 @@ string coord[500];
 int board_size, board_range;
 char pieces[] = {'.','#','o',' ',' ','b','w',' ','+'};
 char files[] = "     a b c d e f g h i j k l m n o p q r s t";
-vector<int> p1_liberties = {}, p1_block = {};
-vector<int> p2_liberties = {}, p2_block = {};
+vector<int> liberties = {}, block = {}, check = {};
 
 //define function
 void print_board(){
@@ -83,6 +82,26 @@ void set_board(){
     }
 }
 
+void clear_block(){
+    for (int i=0; i<block.size(); i++) board[block[i]] = EMPTY;
+}
+
+void restore_board(){
+    liberties = {}, block = {};
+
+    for (int i=0; i < board_range*board_range; i++){
+        if (board[i] != OFFBOARD) board[i] &= 3;
+    }
+}
+
+void clear_board(){
+    liberties = {}, block = {};
+
+    for (int i=0; i < board_range*board_range; i++){
+        if (board[i] != OFFBOARD) board[i] = 0;
+    }
+}
+
 void count(int square, int color){ 
     // init piece
     int piece = board[square];
@@ -91,7 +110,7 @@ void count(int square, int color){
     if (piece == OFFBOARD) return;
     
     // if there's a stone at square
-    if (piece == color){
+    if (piece && piece & color && (piece & MARKER) == 0){
         // save stone's coordinate
         block.push_back(square);
 
@@ -109,20 +128,12 @@ void count(int square, int color){
     }
 }
 
-void clear_stone(){
-    for (int i=0; i<block.size(); i++) board[block[i]] = EMPTY;
-}
-
-void restore_board(){
-    liberties = {}, block = {};
-
-    for (int i=0; i < board_range*board_range; i++){
-        if (board[i] != OFFBOARD) board[i] &= 3;
-    }
-}
-
 void place_stone(int color){
     string position;
+    int i;
+    int oppcolor;
+    if (color == BLACK) oppcolor = WHITE;
+    else if (color == WHITE) oppcolor = BLACK;
     
     // loop ask position
     while (true) {
@@ -134,19 +145,40 @@ void place_stone(int color){
         if (position[0]>='a' && position[0] <= 'z') position[0] = position[0] - 32;
 
         // find position
-        int i=0;
+        i=0;
         while (coord[i] != "\0"){
             if (coord[i] == position) break;
             i++;
         }
-        if (board[i] == EMPTY) {
+        if (board[i] == EMPTY || board[i] == LIBERTY) {
             board[i] = color;
             break;
         } else cout <<"Alredy Exist !" <<endl; 
     }
 
+    // count(i, color);
+    // clear_block();
+    // restore_board();
+
+    check.push_back(i);
+    for (int j=0; j<check.size(); j++){
+       count(check[j], color);
+    //    if (oppcolor != LIBERTY) break;
+    }
+    // clear_block();
+
     //print board
     print_board();
+}
+
+void print_detail(){
+    cout <<"\n";
+    cout <<"block : ";
+    for (int i=0; i<block.size(); i++) cout<<block[i] <<" ";
+    cout << "\n";
+    cout <<"liberties : ";
+    for (int i=0; i<liberties.size(); i++) cout<<liberties[i] <<" ";
+    cout << "\n";
 }
 
 void switch_player(){
@@ -156,11 +188,15 @@ void switch_player(){
         cout <<"\n\n";
         cout <<"[Turn " <<turn << "] Player 1 !!!" <<"\n\n";
         place_stone(BLACK);
+        print_detail();
+        restore_board();
 
         // player two's turn
         cout <<"\n\n";
         cout <<"[Turn " <<turn << "] Player 2 !!!" <<"\n\n";
         place_stone(WHITE);
+        print_detail();
+        restore_board();
 
         // next turn
         turn++;
