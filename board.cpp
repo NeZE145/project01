@@ -149,6 +149,7 @@ void setstone_printboard_deletestone(){
         changetoXY(position,y,x);
     }
     board[x][y] = 2;
+    replaceSurroundedforplayer2(board);
     printboard(a,board);
 
 }
