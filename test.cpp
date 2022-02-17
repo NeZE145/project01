@@ -1,73 +1,186 @@
-#include<iostream>
-
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include "board.h"
 using namespace std;
 
-const int N = 9; // เปลี่ยนได้ตามขนาด นั้นนี้ตั้งค่าเริ่มต้นไว้เฉยๆ
-const int M = 9;
+//stones
+int EMPTY = 0;
+int BLACK = 1;
+int WHITE = 2;
+int MARKER = 4;
+int OFFBOARD = 7;
+int LIBERTY = 8;
 
-void pullpiecse(bool [][M], int,int);
+//Variable
+int board_size, board_range;
+char pieces[] = {'.','#','o',' ',' ','b','w',' ','+'};
+char files[] = "     a b c d e f g h i j k l m n o p q r s t";
 
-void pull(const bool [][M]);
+//count
+vector<int> liberties = {}, block = {};
 
-void board(){
-    char a='a';
-    for(int i=0;i<9;i++){
-        cout << 9-i << "  ";
-        for (int j=0;j<9;j++){
-            cout << "."<< " ";
+//define function
+void print_board(int board[], int board_size, char pieces[], char files[]){
+    board_range = board_size + 2;
+    int square, stone, rank;
+
+    // loop rows
+    for (int row=0; row<board_range; row++){
+        //loop columns
+        for (int col=0; col<board_range; col++){
+            square = row * board_range + col;
+            stone = board[square];
+
+            //print rank
+            if (col == 0 && row > 0 && row < board_range - 1){
+                rank = board_range - 1 - row;
+                if (rank < 10) cout <<" " <<rank <<" ";
+                else cout <<rank <<" ";
+            }
+            //print board
+            cout << pieces[stone] <<" ";
         }
-        cout << endl;
+        //print new line
+        cout <<endl;
     }
-    cout << endl<<"   ";
-    for(int i=0;i<9;i++){
-        cout <<a++<<" ";
-    }
-    cout << "\n";
+    //print files
+    for (int i=0; i<board_range*2; i++) cout <<files[i];
+    cout <<endl;
 }
 
-
-int main(){
-    board();
-    bool image[N][M] = {};
-    int x, y;
-    do
-    {
-        if (x==0 && y ==0) break; //ใส่เงื่อนไขนับแต้ม
-        else{
-            cout << "Player1 Input your location: ";
-            cin >> x >> y;
-            pullpiecse(image,x,y);
-            pull(image);
+void set_board(int board[], string coord[], int board_size, int total_size){
+    //duplicate board
+    if (board_size == 9){
+        for (int i=0; i<total_size; i++){
+        board[i] = board_9x9[i];
         }
-    } while (1);
+    } else if (board_size == 13){
+        for (int i=0; i<total_size; i++){
+        board[i] = board_13x13[i];
+        }
+    } else if (board_size == 19){
+        for (int i=0; i<total_size; i++){
+        board[i] = board_19x19[i];
+        }
+    }
+
+    //duplicate coord
+    if (board_size == 9){
+        for (int i=0; i<total_size; i++){
+        coord[i] = coords_9x9[i];
+        }
+    } else if (board_size == 13){
+        for (int i=0; i<total_size; i++){
+        coord[i] = coords_13x13[i];
+        }
+    } else if (board_size == 19){
+        for (int i=0; i<total_size; i++){
+        coord[i] = coords_19x19[i];
+        }
+    }
+}
+
+void count(int board[], int square, int color){ 
+    // init piece
+    int piece = board[square];
+    
+    // skip offboard squares
+    if (piece == OFFBOARD) return;
+    
+    // if there's a stone at square
+    if (piece == color){
+        // save stone's coordinate
+        block.push_back(square);
+
+        board[square] |= MARKER;
+
+        count(board, square - board_range , color);
+        count(board, square - 1 , color);
+        count(board, square + board_range, color);
+        count(board, square + 1, color);
+        
+    } 
+    else if (piece == EMPTY) {
+        board[square] |= LIBERTY;
+        liberties.push_back(square);
+    }
+}
+
+void clear_stone(int board[]){
+    for (int i=0; i<block.size(); i++) board[block[i]] = EMPTY;
+}
+
+void restore_board(int board[]){
+    liberties = {}, block = {};
+
+    for (int i=0; i < board_range*board_range; i++){
+        if (board[i] != OFFBOARD) board[i] &= 3;
+    }
+}
+
+void place_stone(int board[], string coord[], int board_size, int color){
+    string position;
+    
+    // loop ask position
+    while (true) {
+        // select position
+        cout <<"select position (Example A4, B5, ...): ";
+        cin >> position;
+    
+        // convert to uppercase
+        if (position[0]>='a' && position[0] <= 'z') position[0] = position[0] - 32;
+
+        // find position
+        int i=0;
+        while (coord[i] != "\0"){
+            if (coord[i] == position) break;
+            i++;
+        }
+        if (board[i] == EMPTY) {
+            board[i] = color;
+            break;
+        } else cout <<"Alredy Exist !" <<endl; 
+    }
+
+    print_board(board, board_size, pieces, files);
+}
+
+void switch_player(int board[], string coord[], int board_size){
+    int turn = 1;
+    while (true) {
+        // player one's turn
+        cout <<"\n\n";
+        cout <<"[Turn " <<turn << "] Player 1 !!!" <<"\n\n";
+        place_stone(board, coord, board_size, BLACK);
+
+        // player two's turn
+        cout <<"\n\n";
+        cout <<"[Turn " <<turn << "] Player 2 !!!" <<"\n\n";
+        place_stone(board, coord, board_size, WHITE);
+
+        // next turn
+        turn++;
+    }
+}
+
+int main() {
+    //loop ask board size
+    do {
+    cout << "Select board size (9, 13, 19) : ";
+    cin >> board_size;
+    }while (board_size != 9 && board_size != 13 && board_size != 19);
+
+    //set board size
+    int total_size = (int) pow(board_size+2, 2);
+    int board[total_size];
+    string coord[total_size];
+    set_board(board, coord, board_size, total_size);
+
+    print_board(board, board_size, pieces, files);
+
+    // take turns
+    switch_player(board, coord, board_size);
+
     return 0;
 }
-
-void pullpiecse(bool image[][M], int x, int y){
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < M; j++)
-        {
-            if (x-1 == i && y-1 == j) image[i][j]=1;
-        }
-        
-    }
-    
-}
-
-void pull(const bool image[][M]){
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < M; j++)
-        {
-            if (image[i][j]) cout << " #";   
-            else cout << " .";
-        }
-        cout << "\n";
-    }
-    
-}
-
-
-
-
