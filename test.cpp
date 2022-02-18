@@ -19,7 +19,7 @@ int board_size, board_range;
 // char pieces[] = {'.','#','o',' ',' ','b','w',' ','+'};
 char pieces[] = {'.','#','o',' ',' ','#','o',' ','.'};
 char files[] = "     a b c d e f g h i j k l m n o p q r s t";
-vector<int> liberties = {}, block = {}, check = {};
+vector<int> liberties = {}, block = {};
 
 //define function
 void print_board(){
@@ -143,18 +143,33 @@ void count(int square, int color){
 }
 
 void captures(int color){
-    // int oppcolor;
-    // if (color == BLACK) oppcolor = WHITE;
-    // else if (color == WHITE) oppcolor = BLACK;
+    // init opposite color
+    int oppcolor;
+    if (color == BLACK) oppcolor = WHITE;
+    else if (color == WHITE) oppcolor = BLACK;
 
-    //loop find 
+    // loop over the board
     for (int square=0; square<board_range*board_range; square++){
         int piece = board[square];
 
+        // skip offboard squares
         if (piece == OFFBOARD) continue;
         
+        // if stone belongs to the given color
         if (piece & color){
+            // count liberties
             count(square, color);
+
+            // if no liberties left remove the stones
+            if (liberties.size() == 0) clear_block();
+            restore_board();
+        }
+        // if stone belongs to the opposite color
+        else if (piece & oppcolor){
+            // count liberties
+            count(square, oppcolor);
+
+            // if no liberties left remove the stones
             if (liberties.size() == 0) clear_block();
             restore_board();
         }
@@ -187,7 +202,6 @@ void place_stone(int color){
     }
 
     // check captures
-    check.push_back(i);
     captures(color);
 
     //print board
@@ -201,15 +215,11 @@ void switch_player(){
         cout <<"\n\n";
         cout <<"[Turn " <<turn << "] Player 1 !!!" <<"\n\n";
         place_stone(BLACK);
-        restore_board();
-        clear_block();
 
         // player two's turn
         cout <<"\n\n";
         cout <<"[Turn " <<turn << "] Player 2 !!!" <<"\n\n";
         place_stone(WHITE);
-        restore_board();
-        clear_block();
  
         // next turn
         turn++;
