@@ -94,12 +94,13 @@ void print_detail(){
 }
 
 void clear_block(){
+    // remove captured stones
     for (int i=0; i<block.size(); i++) board[block[i]] = EMPTY;
 }
 
 void restore_board(){
     liberties = {}, block = {};
-
+    //unmark stones
     for (int i=0; i < board_range*board_range; i++){
         if (board[i] != OFFBOARD) board[i] &= 3;
     }
@@ -124,7 +125,7 @@ void count(int square, int color){
     if (piece && piece & color && (piece & MARKER) == 0){
         // save stone's coordinate
         block.push_back(square);
-
+        // mark the stone
         board[square] |= MARKER;
 
         count(square - board_range , color);
@@ -134,21 +135,27 @@ void count(int square, int color){
         
     } 
     else if (piece == EMPTY) {
+        // mark liberty
         board[square] |= LIBERTY;
+        // save liberty
         liberties.push_back(square);
     }
 }
 
-void check_stone(int color){
-    int oppcolor;
-    if (color == BLACK) oppcolor = WHITE;
-    else if (color == WHITE) oppcolor = BLACK;
+void captures(int color){
+    // int oppcolor;
+    // if (color == BLACK) oppcolor = WHITE;
+    // else if (color == WHITE) oppcolor = BLACK;
 
-    // check.push_back(i);
-    for (int j=0; j<check.size(); j++){
-        count(check[j], color);
-        if (liberties.size() == 0){
-            clear_block();
+    //loop find 
+    for (int square=0; square<board_range*board_range; square++){
+        int piece = board[square];
+
+        if (piece == OFFBOARD) continue;
+        
+        if (piece & color){
+            count(square, color);
+            if (liberties.size() == 0) clear_block();
             restore_board();
         }
     }
@@ -179,9 +186,9 @@ void place_stone(int color){
         } else cout <<"Alredy Exist !" <<endl; 
     }
 
-    // check
+    // check captures
     check.push_back(i);
-    check_stone(color);
+    captures(color);
 
     //print board
     print_board();
@@ -194,20 +201,16 @@ void switch_player(){
         cout <<"\n\n";
         cout <<"[Turn " <<turn << "] Player 1 !!!" <<"\n\n";
         place_stone(BLACK);
-        print_detail();
         restore_board();
         clear_block();
-
 
         // player two's turn
         cout <<"\n\n";
         cout <<"[Turn " <<turn << "] Player 2 !!!" <<"\n\n";
         place_stone(WHITE);
-        print_detail();
         restore_board();
         clear_block();
  
-
         // next turn
         turn++;
     }
