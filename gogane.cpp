@@ -235,7 +235,7 @@ bool endgame(){
     cout << "WHITE:"<<w<< endl<<"Black:"<<  b;
     if (board_size == 9){
         if(w-b>=5){
-            cout << "----------------------------------------\n";
+            cout << endl << "----------------------------------------\n";
             cout << "|                                      |\n";
             cout << "|            ***WHITE WIN***           |\n";
             cout << "|                                      |\n";
@@ -243,27 +243,47 @@ bool endgame(){
             return false;
         }
         if(b-w>=5){
-            cout<<endl<<"BLACK WIN";
+            cout << endl << "----------------------------------------\n";
+            cout << "|                                      |\n";
+            cout << "|            ***BLACK WIN***           |\n";
+            cout << "|                                      |\n";
+            cout << "----------------------------------------\n";
             return false;
         }
     }
     if (board_size == 13){
         if(w-b>=10){
-            cout<<endl<<"WHITE WIN";
+            cout << endl << "----------------------------------------\n";
+            cout << "|                                      |\n";
+            cout << "|            ***WHITE WIN***           |\n";
+            cout << "|                                      |\n";
+            cout << "----------------------------------------\n";
             return false;
         }
         if(b-w>=10){
-            cout<<endl<<"BLACK WIN";
+            cout << endl << "----------------------------------------\n";
+            cout << "|                                      |\n";
+            cout << "|            ***BLACK WIN***           |\n";
+            cout << "|                                      |\n";
+            cout << "----------------------------------------\n";
             return false;
         }
     }
     if (board_size == 19){
         if(w-b>=15){
-            cout<<endl<<"WHITE WIN";
+            cout << endl << "----------------------------------------\n";
+            cout << "|                                      |\n";
+            cout << "|            ***WHITE WIN***           |\n";
+            cout << "|                                      |\n";
+            cout << "----------------------------------------\n";
             return false;
         }
         if(b-w>=15){
-            cout<<endl<<"BLACK WIN";
+            cout << endl << "----------------------------------------\n";
+            cout << "|                                      |\n";
+            cout << "|            ***BLACK WIN***           |\n";
+            cout << "|                                      |\n";
+            cout << "----------------------------------------\n";
             return false;
         }
     }
@@ -276,12 +296,12 @@ void switchturn(){
     int turn = 1;
     do{
         cout <<"\n\n";
-        cout <<"[Turn " <<turn << "] Player 1 !!!" <<"\n\n";
+        cout <<"[Turn " <<turn << "] White !!!" <<"\n\n";
         place_stone(BLACK);
         endgame();
         // player two's turn
         cout <<"\n\n";
-        cout <<"[Turn " <<turn << "] Player 2 !!!" <<"\n\n";
+        cout <<"[Turn " <<turn << "] Black !!!" <<"\n\n";
         place_stone(WHITE);
         turn++;
 
