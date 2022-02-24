@@ -235,6 +235,7 @@ bool endgame(){
     cout << "WHITE:"<<w<< endl<<"Black:"<<  b;
     if (board_size == 9){
         if(w-b>=5){
+            cout << "----------------------------------------\n";
             cout<<endl<< "WHITE WIN";
             return false;
         }
