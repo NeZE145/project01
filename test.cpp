@@ -95,7 +95,11 @@ void print_detail(){
 
 void clear_block(){
     // remove captured stones
-    for (int i=0; i<block.size(); i++) board[block[i]] = EMPTY;
+    for (int i=0; i<block.size(); i++){ 
+        board[block[i]] = EMPTY;
+        cout << i;
+    }
+    
 }
 
 void restore_board(){
@@ -185,7 +189,6 @@ void place_stone(int color){
         // select position
         cout <<"select position (Example A4, B5, ...): ";
         cin >> position;
-    
         // convert to uppercase
         if (position[0]>='a' && position[0] <= 'z') position[0] = position[0] - 32;
 
@@ -208,22 +211,98 @@ void place_stone(int color){
     print_board();
 }
 
-void switch_player(){
+
+bool endgame(){
+    int w=0,b=0;
+    int total_size = (int) pow(board_size+2, 2);
+    if (board_size == 9){
+        for (int i=0; i<total_size; i++){
+            if(board[i]==WHITE) w++;
+            if(board[i]==BLACK) b++;
+        }
+    } else if (board_size == 13){
+        for (int i=0; i<total_size; i++){
+            if(board[i]==WHITE) w++;
+            if(board[i]==BLACK) b++;
+        }
+    } else if (board_size == 19){
+        for (int i=0; i<total_size; i++){
+            if(board[i]==WHITE) w++;
+            if(board[i]==BLACK) b++;
+        }
+    }
+
+    cout << "WHITE:"<<w<< endl<<"Black:"<<  b;
+    if (board_size == 9){
+        if(w-b>=5){
+            cout<<endl<< "WHITE WIN";
+            return false;
+        }
+        if(b-w>=5){
+            cout<<endl<<"BLACK WIN";
+            return false;
+        }
+    }
+    if (board_size == 13){
+        if(w-b>=10){
+            cout<<endl<<"WHITE WIN";
+            return false;
+        }
+        if(b-w>=10){
+            cout<<endl<<"BLACK WIN";
+            return false;
+        }
+    }
+    if (board_size == 19){
+        if(w-b>=15){
+            cout<<endl<<"WHITE WIN";
+            return false;
+        }
+        if(b-w>=15){
+            cout<<endl<<"BLACK WIN";
+            return false;
+        }
+    }
+    return true;
+
+}
+
+// void switch_player(){
+//     int turn = 1;
+//     while (endgame()) {
+//         // player one's turn
+//         cout <<"\n\n";
+//         cout <<"[Turn " <<turn << "] Player 1 !!!" <<"\n\n";
+//         place_stone(BLACK);
+//         endgame();
+//         // player two's turn
+//         cout <<"\n\n";
+//         cout <<"[Turn " <<turn << "] Player 2 !!!" <<"\n\n";
+//         place_stone(WHITE);
+//         endgame();
+ 
+//         // next turn
+//         turn++;
+//     }
+// }
+
+
+
+
+void switchTurn(){
     int turn = 1;
-    while (true) {
-        // player one's turn
+    do{
         cout <<"\n\n";
         cout <<"[Turn " <<turn << "] Player 1 !!!" <<"\n\n";
         place_stone(BLACK);
-
+        endgame();
         // player two's turn
         cout <<"\n\n";
         cout <<"[Turn " <<turn << "] Player 2 !!!" <<"\n\n";
         place_stone(WHITE);
- 
-        // next turn
         turn++;
-    }
+
+    }while(endgame());
 }
 
 int main() {
@@ -238,7 +317,7 @@ int main() {
     print_board();
 
     // take turns
-    switch_player();
+    switchTurn();
 
     return 0;
 }
