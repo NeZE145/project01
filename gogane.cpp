@@ -267,27 +267,6 @@ bool endgame(){
 
 }
 
-void switch_player(){
-    int turn = 1;
-    while (endgame()) {
-        // player one's turn
-        cout <<"\n\n";
-        cout <<"[Turn " <<turn << "] Player 1 !!!" <<"\n\n";
-        place_stone(BLACK);
-        endgame();
-        // player two's turn
-        cout <<"\n\n";
-        cout <<"[Turn " <<turn << "] Player 2 !!!" <<"\n\n";
-        place_stone(WHITE);
-        endgame();
- 
-        // next turn
-        turn++;
-    }
-}
-
-
-
 
 void switchturn(){
     int turn = 1;
