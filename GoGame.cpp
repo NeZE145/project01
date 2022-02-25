@@ -136,28 +136,23 @@ void captures(int color){
     if (color == BLACK) oppcolor = WHITE;
     else if (color == WHITE) oppcolor = BLACK;
 
-    // loop over the board
     for (int square=0; square<board_range*board_range; square++){
         int piece = board[square];
 
-        // skip offboard squares
+        // skip offboard 
         if (piece == OFFBOARD) continue;
         
         // if stone belongs to the given color
         if (piece & color){
-            // count liberties
             count(square, color);
 
-            // if no liberties left remove the stones
             if (liberties.size() == 0) clear_block();
             restore_board();
         }
         // if stone belongs to the opposite color
         else if (piece & oppcolor){
-            // count liberties
             count(square, oppcolor);
 
-            // if no liberties left remove the stones
             if (liberties.size() == 0) clear_block();
             restore_board();
         }
@@ -278,13 +273,14 @@ bool endgame(){
 void switchTurn(){
     int turn = 1;
     do{
+        // player one's turn
         cout <<"\n\n";
-        cout <<"[Turn " <<turn << "] White[#] !!!" <<"\n\n";
+        cout <<"[Turn " <<turn << "] Black[#] !!!" <<"\n\n";
         place_stone(BLACK);
         endgame();
         // player two's turn
         cout <<"\n\n";
-        cout <<"[Turn " <<turn << "] Black[O] !!!" <<"\n\n";
+        cout <<"[Turn " <<turn << "] White[O] !!!" <<"\n\n";
         place_stone(WHITE);
         turn++;
 
