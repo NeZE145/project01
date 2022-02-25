@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "board.h"
+#include "board_test.h"
 using namespace std;
 
 //stones
@@ -47,7 +47,7 @@ void print_board(int board[], int board_size, char pieces[], char files[]){
     cout <<endl;
 }
 
-void set_board(int board[], string coord[], int board_size, int total_size){
+void set_board(int board[], int board_size, int total_size){
     //duplicate board
     if (board_size == 9){
         for (int i=0; i<total_size; i++){
@@ -63,32 +63,18 @@ void set_board(int board[], string coord[], int board_size, int total_size){
         }
     }
 
-    //duplicate coord
-    if (board_size == 9){
-        for (int i=0; i<total_size; i++){
-        coord[i] = coords_9x9[i];
-        }
-    } else if (board_size == 13){
-        for (int i=0; i<total_size; i++){
-        coord[i] = coords_13x13[i];
-        }
-    } else if (board_size == 19){
-        for (int i=0; i<total_size; i++){
-        coord[i] = coords_19x19[i];
-        }
-    }
 }
 
 void count(int board[], int square, int color){ 
     // init piece
     int piece = board[square];
     
-    // skip offboard squares
+    // skip offboard 
     if (piece == OFFBOARD) return;
     
-    // if there's a stone at square
+    // if stone at square
     if (piece && piece & color && (piece & MARKER) == 0){
-        // save stone's coordinate
+        
         block.push_back(square);
 
         board[square] |= MARKER;
@@ -128,7 +114,7 @@ int main() {
     int total_size = (int) pow(board_size+2, 2);
     int board[total_size];
     string coord[total_size];
-    set_board(board, coord, board_size, total_size);
+    set_board(board, board_size, total_size);
 
     print_board(board, board_size, pieces, files);
 
@@ -146,15 +132,6 @@ int main() {
     cout <<"liberties : ";
     for (int i=0; i<liberties.size(); i++) cout<<liberties[i] <<" ";
     cout << "\n\n";
-
-    // // restore board
-    // restore_board(board);
-
-    // print_board(board, board_size, pieces, files);
-
-    // for (int i=0; i<block.size(); i++) cout<<block[i] <<" ";
-    // cout << "\n";
-    // for (int i=0; i<liberties.size(); i++) cout<<liberties[i] <<" ";
 
     return 0;
 }
