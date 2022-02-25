@@ -16,7 +16,6 @@ int LIBERTY = 8;
 int board[500];
 string coord[500];
 int board_size, board_range;
-// char pieces[] = {'.','#','o',' ',' ','b','w',' ','+'};
 char pieces[] = {'.','#','o',' ',' ','#','o',' ','.'};
 char files[] = "     a b c d e f g h i j k l m n o p q r s t";
 vector<int> liberties = {}, block = {};
@@ -51,6 +50,12 @@ void print_board(){
 }
 
 void set_board(){
+    //loop ask board size
+    do {
+    cout << "Select board size (9, 13, 19) : ";
+    cin >> board_size;
+    }while (board_size != 9 && board_size != 13 && board_size != 19);
+
     int total_size = (int) pow(board_size+2, 2);
     //duplicate board
     if (board_size == 9){
@@ -83,23 +88,9 @@ void set_board(){
     }
 }
 
-void print_detail(){
-    cout <<"\n";
-    cout <<"block : ";
-    for (int i=0; i<block.size(); i++) cout<<block[i] <<" ";
-    cout << "\n";
-    cout <<"liberties : ";
-    for (int i=0; i<liberties.size(); i++) cout<<liberties[i] <<" ";
-    cout << "\n";
-}
-
 void clear_block(){
     // remove captured stones
-    for (int i=0; i<block.size(); i++){ 
-        board[block[i]] = EMPTY;
-        cout << i;
-    }
-    
+    for (int i=0; i<block.size(); i++) board[block[i]] = EMPTY;
 }
 
 void restore_board(){
@@ -107,14 +98,6 @@ void restore_board(){
     //unmark stones
     for (int i=0; i < board_range*board_range; i++){
         if (board[i] != OFFBOARD) board[i] &= 3;
-    }
-}
-
-void clear_board(){
-    liberties = {}, block = {};
-
-    for (int i=0; i < board_range*board_range; i++){
-        if (board[i] != OFFBOARD) board[i] = EMPTY;
     }
 }
 
@@ -132,6 +115,7 @@ void count(int square, int color){
         // mark the stone
         board[square] |= MARKER;
 
+        //move around square
         count(square - board_range , color);
         count(square - 1 , color);
         count(square + board_range, color);
@@ -189,6 +173,7 @@ void place_stone(int color){
         // select position
         cout <<"select position (Example A4, B5, ...): ";
         cin >> position;
+    
         // convert to uppercase
         if (position[0]>='a' && position[0] <= 'z') position[0] = position[0] - 32;
 
@@ -210,7 +195,6 @@ void place_stone(int color){
     //print board
     print_board();
 }
-
 
 bool endgame(){
     int w=0,b=0;
@@ -291,8 +275,7 @@ bool endgame(){
 
 }
 
-
-void switchturn(){
+void switchTurn(){
     int turn = 1;
     do{
         cout <<"\n\n";
@@ -309,18 +292,12 @@ void switchturn(){
 }
 
 int main() {
-    //loop ask board size
-    do {
-    cout << "Select board size (9, 13, 19) : ";
-    cin >> board_size;
-    }while (board_size != 9 && board_size != 13 && board_size != 19);
-
-    //set board size & print
+    //set board 
     set_board();
     print_board();
 
     // take turns
-    switchturn();
+    switchTurn();
 
     return 0;
 }
