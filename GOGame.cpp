@@ -296,12 +296,12 @@ void switchturn(){
     int turn = 1;
     do{
         cout <<"\n\n";
-        cout <<"[Turn " <<turn << "] White !!!" <<"\n\n";
+        cout <<"[Turn " <<turn << "] White[#] !!!" <<"\n\n";
         place_stone(BLACK);
         endgame();
         // player two's turn
         cout <<"\n\n";
-        cout <<"[Turn " <<turn << "] Black !!!" <<"\n\n";
+        cout <<"[Turn " <<turn << "] Black[O] !!!" <<"\n\n";
         place_stone(WHITE);
         turn++;
 
